@@ -6,6 +6,7 @@ import java.lang.annotation.Annotation;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -345,6 +346,26 @@ public class Controller implements ControllerSupport, LocalVariablesSupport {
      */
     protected static void renderJSON(Object o, JsonSerializer<?>... adapters) {
         throw new RenderJson(o, adapters);
+    }
+    
+    /**
+     * Render a 200 OK application/json response
+     * @param args The Java objects and a set of GSON serializers/deseralizers/instance creator to use
+     */
+    protected static void renderJSON2(Object ... args) {
+        Map<String, Object> templateBinding = new HashMap<String, Object>(16);
+        List<JsonSerializer<?>> l = new ArrayList<JsonSerializer<?>>();
+        for (Object o : args) {
+            if (o instanceof JsonSerializer) {
+                l.add((JsonSerializer<?>)o);
+                continue;
+            }
+            List<String> names = LocalVariablesNamesTracer.getAllLocalVariableNames(o);
+            for (String name : names) {
+                templateBinding.put(name, o);
+            }
+        }
+        throw new RenderJson(templateBinding, l.toArray(new JsonSerializer[]{}));
     }
 
     /**
