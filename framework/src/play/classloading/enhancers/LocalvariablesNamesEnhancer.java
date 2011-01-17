@@ -1,6 +1,9 @@
 package play.classloading.enhancers;
 
 import java.lang.reflect.Method;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+import java.lang.annotation.Target;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
 import java.util.ArrayList;
@@ -119,7 +122,7 @@ public class LocalvariablesNamesEnhancer extends Enhancer {
 
             // Signatures names
             CodeAttribute codeAttribute = (CodeAttribute) method.getMethodInfo().getAttribute("Code");
-            if (codeAttribute == null || javassist.Modifier.isAbstract(method.getModifiers())) {
+            if (codeAttribute == null || javassist.Modifier.isAbstract(method.getModifiers()) || method.getAnnotation(NoLocalVariablesSupport.class) != null) {
                 continue;
             }
             LocalVariableAttribute localVariableAttribute = (LocalVariableAttribute) codeAttribute.getAttribute("LocalVariableTable");
@@ -308,6 +311,16 @@ public class LocalvariablesNamesEnhancer extends Enhancer {
      * Mark class that need local variables tracking
      */
     public static interface LocalVariablesSupport {
+    }
+     
+    /**
+     * Mark a method that does not need local variables tracking
+     * @author greenlaw110@gmail.com
+     *
+     */
+    @Retention(RetentionPolicy.RUNTIME)
+    @Target({java.lang.annotation.ElementType.METHOD})
+    public static @interface NoLocalVariablesSupport {
     }
 
     /**
