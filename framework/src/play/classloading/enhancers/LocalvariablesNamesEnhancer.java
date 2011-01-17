@@ -1,12 +1,9 @@
 package play.classloading.enhancers;
 
-<<<<<<< HEAD
 import java.lang.reflect.Method;
-=======
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
->>>>>>> support NoJsonExpose annotation
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
 import java.util.ArrayList;
