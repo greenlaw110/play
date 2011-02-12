@@ -34,7 +34,7 @@ public class RenderJson extends Result {
     }
     
     protected GsonBuilder gb() {
-        return  new GsonBuilder().setExclusionStrategies(new ES_()).serializeNulls();
+        return new GsonBuilder().setExclusionStrategies(new ES_()).serializeNulls();
     }
 
     public RenderJson(Object o) {
