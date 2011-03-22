@@ -19,6 +19,44 @@ h2. <a name="loading">How to load a module from an application</a>
 
 Modules are automatically loaded from the @/modules@ directory of the application. You can use the "dependency management system":dependency to automatically manage your application modules.
 
+The default modules installation path is in the **$PLAY_HOME/modules** directory. This way all modules are automatically available to all applications run with the framework.
+
+If you want to load external modules from an application, just declare external modules in the application.conf file in the main application.
+
+bc. # Additional modules
+# ~~~~~
+# A module is another Play application. Add a line for each module you want
+# to add to your application. Module paths are either absolute or relative to
+# the application root.
+#
+module.crud=${play.path}/modules/crud
+
+You can also create a standalone project that contains all modules needed by your application. You just need to copy all modules into the same directory as your application. 
+
+Let’s say you have a large application with a CMS component, a forum component, a directory component and using the GWT module. You can create a project using this layout:
+
+bc. /my-project
+    /cms
+    /forum
+    /directory
+    /gwt
+    /main
+
+Here **main** is the directory of your main application (created using the **play new** command), **gwt** is a module installed from the modules repository, and **cms**, **forum** and **directory** are modules created using the **play new-module** command.
+
+Now from the main application configuration file (my-project/main/conf/application.conf), you can load these modules using:
+
+bc. # Additional modules
+# ~~~~~
+module.gwt=../gwt
+module.cms=../cms
+module.forum=../forum
+module.directory=../directory
+
+When you run the main application (using **play run my-project/main**) it will load all these modules in memory as a larger application.
+
+p(note). If module paths are relative, they are resolved from the main application root.
+
 h2. <a name="routes">Load default routes from modules</a>
 
 A module can provide a default @routes@ file. You can load it in the main application @routes@ file, using a special route declaration:
