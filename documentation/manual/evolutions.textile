@@ -90,7 +90,7 @@ Automatic merge failed; fix conflicts and then commit the result.
 
 Each developer has created a @2.sql@ evolution script. So developer A needs to merge the contents of this file:
 
-bc. <<<<<<< HEAD
+bc. 
 # Add Post
  
 # --- !Ups
@@ -106,15 +106,6 @@ CREATE TABLE Post (
  
 # --- !Downs
 DROP TABLE Post;
-=======
-# Update User
- 
-# --- !Ups
-ALTER TABLE User ADD age INT;
- 
-# --- !Downs
-ALTER TABLE User DROP age;
->>>>>>> devB
 
 The merge is really easy to do:
 
