@@ -200,7 +200,7 @@ bc. public static void auth() {
     FACEBOOK.requestVerificationCode(authUrl); // This will trigger a redirect
 }
 
-Once you have the access token associated to the current user, you can use it to query the service on behalf of the user:
+Once you have the access token associated with the current user, you can use it to query the service on behalf of the user:
 
 bc. WS.url(
     "https://graph.facebook.com/me?access_token=%s", access_token
