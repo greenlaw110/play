@@ -35,21 +35,6 @@ public class RenderJson extends Result {
     
     protected GsonBuilder gb() {
         return new GsonBuilder().setExclusionStrategies(new ES_()).serializeNulls();
-<<<<<<< HEAD
-    }
-
-    public RenderJson(Object o) {
-        json = gson().toJson(o);
-    }
-    
-    protected GsonBuilder gb() {
-        return  new GsonBuilder().setExclusionStrategies(new ES_()).serializeNulls();
-    }
-
-    public RenderJson(Object o) {
-        json = gson().toJson(o);
-=======
->>>>>>> 2e5081566164844dd293ff6198d41ae87a0579ca
     }
 
     public RenderJson(Object o) {
