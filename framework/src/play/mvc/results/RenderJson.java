@@ -35,6 +35,7 @@ public class RenderJson extends Result {
     
     protected GsonBuilder gb() {
         return new GsonBuilder().setExclusionStrategies(new ES_()).serializeNulls();
+<<<<<<< HEAD
     }
 
     public RenderJson(Object o) {
@@ -47,10 +48,16 @@ public class RenderJson extends Result {
 
     public RenderJson(Object o) {
         json = gson().toJson(o);
+=======
+>>>>>>> 2e5081566164844dd293ff6198d41ae87a0579ca
     }
 
+    public RenderJson(Object o) {
+        json = gson().toJson(o);
+    }
+    
     public RenderJson(Object o, Type type) {
-        json = new Gson().toJson(o, type);
+        json = gson().toJson(o, type);
     }
 
     public RenderJson(Object o, JsonSerializer<?>... adapters) {
@@ -61,7 +68,7 @@ public class RenderJson extends Result {
         }
         json = gson.create().toJson(o);
     }
-
+    
     public RenderJson(String jsonString) {
         json = jsonString;
     }
@@ -74,14 +81,15 @@ public class RenderJson extends Result {
             throw new UnexpectedException(e);
         }
     }
-
+    
     //
+    
     static Method getMethod(Class<?> clazz, String name) {
-        for (Method m : clazz.getDeclaredMethods()) {
-            if (m.getName().equals(name)) {
+        for(Method m : clazz.getDeclaredMethods()) {
+            if(m.getName().equals(name)) {
                 return m;
             }
         }
         return null;
     }
-}
+} 
