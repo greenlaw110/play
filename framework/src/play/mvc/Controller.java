@@ -349,6 +349,19 @@ public class Controller implements ControllerSupport, LocalVariablesSupport {
     }
     
     /**
+     * Global JsonSerializer Registry
+     */
+    private static Map<Class<?>, JsonSerializer<?>> jsonSerializers = new HashMap<Class<?>, JsonSerializer<?>>();
+    
+    protected static void registerJsonSerializer(JsonSerializer<?> jsonSerializer) {
+        jsonSerializers.put(jsonSerializer.getClass(), jsonSerializer);
+    }
+    
+    protected static void unregisterJsonSerializer(JsonSerializer<?> jsonSerializer) {
+        jsonSerializers.remove(jsonSerializer.getClass());
+    }
+    
+    /**
      * Render a 200 OK application/json response
      * @param args The Java objects and a set of GSON serializers/deseralizers/instance creator to use
      */
@@ -365,6 +378,7 @@ public class Controller implements ControllerSupport, LocalVariablesSupport {
                 templateBinding.put(name, o);
             }
         }
+        l.addAll(jsonSerializers.values());
         throw new RenderJson(templateBinding, l.toArray(new JsonSerializer[]{}));
     }
 
