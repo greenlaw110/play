@@ -28,9 +28,11 @@ import java.util.Map;
  */
 public class WSUrlFetch implements WSImpl {
 
-    public WSUrlFetch() {}
+    public WSUrlFetch() {
+    }
 
-    public void stop() {}
+    public void stop() {
+    }
 
     public play.libs.WS.WSRequest newRequest(String url, String encoding) {
         return new WSUrlfetchRequest(url, encoding);
@@ -71,7 +73,7 @@ public class WSUrlFetch implements WSImpl {
             }
         }
 
-       /** Execute a DELETE request.*/
+        /** Execute a DELETE request.*/
         public HttpResponse delete() {
             try {
                 return new HttpUrlfetchResponse(prepare(new URL(url), "DELETE"));
@@ -111,8 +113,11 @@ public class WSUrlFetch implements WSImpl {
             if (this.username != null && this.password != null && this.scheme != null) {
                 String authString = null;
                 switch (this.scheme) {
-                case BASIC: authString = basicAuthHeader(); break;
-                default: throw new RuntimeException("Scheme " + this.scheme + " not supported by the UrlFetch WS backend.");
+                    case BASIC:
+                        authString = basicAuthHeader();
+                        break;
+                    default:
+                        throw new RuntimeException("Scheme " + this.scheme + " not supported by the UrlFetch WS backend.");
                 }
                 this.headers.put("Authorization", authString);
             }
@@ -122,7 +127,7 @@ public class WSUrlFetch implements WSImpl {
                 connection.setDoInput(true);
                 connection.setInstanceFollowRedirects(this.followRedirects);
                 connection.setReadTimeout(this.timeout * 1000);
-                for (String key: this.headers.keySet()) {
+                for (String key : this.headers.keySet()) {
                     connection.setRequestProperty(key, headers.get(key));
                 }
                 checkFileBody(connection);
@@ -132,35 +137,35 @@ public class WSUrlFetch implements WSImpl {
                     consumer.sign(connection);
                 }
                 return connection;
-            } catch(Exception e) {
+            } catch (Exception e) {
                 throw new RuntimeException(e);
             }
         }
 
         private void checkFileBody(HttpURLConnection connection) throws IOException {
-/*            if (this.fileParams != null) {
-                connection.setDoOutput(true);
-                //could be optimized, we know the size of this array.
-                for (int i = 0; i < this.fileParams.length; i++) {
-                    builder.addBodyPart(new FilePart(this.fileParams[i].paramName,
-                            this.fileParams[i].file,
-                            MimeTypes.getMimeType(this.fileParams[i].file.getName()),
-                            null));
-                }
-                if (this.parameters != null) {
-                    for (String key : this.parameters.keySet()) {
-                        Object value = this.parameters.get(key);
-                        if (value instanceof Collection<?> || value.getClass().isArray()) {
-                            Collection<?> values = value.getClass().isArray() ? Arrays.asList((Object[]) value) : (Collection<?>) value;
-                            for (Object v : values) {
-                                builder.addBodyPart(new StringPart(key, v.toString()));
-                            }
-                        } else {
-                            builder.addBodyPart(new StringPart(key, value.toString()));
-                        }
-                    }
-                }
-                return;
+            /*            if (this.fileParams != null) {
+            connection.setDoOutput(true);
+            //could be optimized, we know the size of this array.
+            for (int i = 0; i < this.fileParams.length; i++) {
+            builder.addBodyPart(new FilePart(this.fileParams[i].paramName,
+            this.fileParams[i].file,
+            MimeTypes.getMimeType(this.fileParams[i].file.getName()),
+            null));
+            }
+            if (this.parameters != null) {
+            for (String key : this.parameters.keySet()) {
+            Object value = this.parameters.get(key);
+            if (value instanceof Collection<?> || value.getClass().isArray()) {
+            Collection<?> values = value.getClass().isArray() ? Arrays.asList((Object[]) value) : (Collection<?>) value;
+            for (Object v : values) {
+            builder.addBodyPart(new StringPart(key, v.toString()));
+            }
+            } else {
+            builder.addBodyPart(new StringPart(key, value.toString()));
+            }
+            }
+            }
+            return;
             }*/
             if (this.parameters != null && !this.parameters.isEmpty()) {
                 connection.setRequestProperty("Content-Type", "application/x-www-form-urlencoded; charset="+encoding);
@@ -172,6 +177,9 @@ public class WSUrlFetch implements WSImpl {
             if (this.body != null) {
                 if (this.parameters != null && !this.parameters.isEmpty()) {
                     throw new RuntimeException("POST or PUT method with parameters AND body are not supported.");
+                }
+                if (this.mimeType != null) {
+                    connection.setRequestProperty("Content-Type", this.mimeType);
                 }
                 connection.setDoOutput(true);
 
@@ -196,7 +204,6 @@ public class WSUrlFetch implements WSImpl {
                 }
             }
         }
-
     }
 
     /**
@@ -242,7 +249,7 @@ public class WSUrlFetch implements WSImpl {
         @Override
         public List<Header> getHeaders() {
             List<Header> result = new ArrayList<Header>();
-            for (String key: headersMap.keySet()) {
+            for (String key : headersMap.keySet()) {
                 result.add(new Header(key, headersMap.get(key)));
             }
             return result;
