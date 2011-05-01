@@ -97,7 +97,9 @@ public class Files {
                 }
                 File f = new File(to, entry.getName());
                 f.getParentFile().mkdirs();
-                IO.copy(zipFile.getInputStream(entry), new FileOutputStream(f));
+                FileOutputStream os = new FileOutputStream(f);
+                IO.copy(zipFile.getInputStream(entry), os);
+                os.close();
             }
             zipFile.close();
         } catch (IOException e) {
