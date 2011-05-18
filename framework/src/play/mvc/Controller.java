@@ -746,7 +746,19 @@ public class Controller implements ControllerSupport, LocalVariablesSupport {
             }
             templateName = templateName.replace(".", "/") + "." + (format == null ? "html" : format);
         }
-        return templateName;
+        return null == templateNameResolver? templateName : templateNameResolver.resolveTemplateName(templateName);
+    }
+    
+    /**
+     * Green: provide a facility enable implict template name resolution, e.g. for the purpose of mobile device template routine
+     */
+    public static interface ITemplateNameResolver {
+        public String resolveTemplateName(String templateName);
+    }
+    
+    private static ITemplateNameResolver templateNameResolver = null;
+    public static void registerTemplateNameResolver(ITemplateNameResolver templateNameResolver) {
+        Controller.templateNameResolver = templateNameResolver;
     }
 
     /**
