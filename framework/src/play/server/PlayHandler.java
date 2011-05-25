@@ -481,7 +481,6 @@ public class PlayHandler extends SimpleChannelUpstreamHandler {
             path = URLDecoder.decode(uri.substring(0, i), encoding);
             querystring = uri.substring(i + 1);
         }
-        path = path.replaceFirst(Play.ctxPath, "");
 
         String remoteAddress = getRemoteIPAddress(ctx);
         String method = nettyRequest.getMethod().getName();
