@@ -528,7 +528,6 @@ public class PlayHandler extends SimpleChannelUpstreamHandler {
                 encoding = contentTypeEncoding.encoding;
             }
         }
-        path = path.replaceFirst(Play.ctxPath, "");
 
         final int i = uri.indexOf("?");
         String querystring = "";
