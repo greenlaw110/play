@@ -758,7 +758,7 @@ public class Controller implements ControllerSupport, LocalVariablesSupport {
     
     private static ITemplateNameResolver templateNameResolver = null;
     public static void registerTemplateNameResolver(ITemplateNameResolver templateNameResolver) {
-        if (null != Controller.templateNameResolver) Logger.warn("Existing tempate name resolver will be override!");
+        if (null != Controller.templateNameResolver) Logger.warn("Existing tempate name resolver will be overridden!");
         Controller.templateNameResolver = templateNameResolver;
     }
 
