@@ -214,7 +214,7 @@ public class ServletWrapper extends HttpServlet implements ServletContextListene
 
         URI uri = new URI(httpServletRequest.getRequestURI());
         String method = httpServletRequest.getMethod().intern();
-        String path = uri.getPath();
+        String path = uri.getPath().replaceFirst(Play.ctxPath, "");
         String querystring = httpServletRequest.getQueryString() == null ? "" : httpServletRequest.getQueryString();
         Logger.trace("httpServletRequest.getContextPath(): " + httpServletRequest.getContextPath());
         Logger.trace("request.path: " + path + ", request.querystring: " + querystring);
