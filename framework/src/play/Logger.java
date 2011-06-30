@@ -73,7 +73,7 @@ public class Logger {
             PropertyConfigurator.configure(log4jConf);
             Logger.log4j = org.apache.log4j.Logger.getLogger("play");
             // In test mode, append logs to test-result/application.log
-            if (Play.runningInTestMode()) {
+            if (Play.runingInTestMode()) {
                 org.apache.log4j.Logger rootLogger = org.apache.log4j.Logger.getRootLogger();
                 try {
                     if (!Play.getFile("test-result").exists()) {
@@ -692,3 +692,4 @@ public class Logger {
         }
     }
 }
+
