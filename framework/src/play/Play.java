@@ -376,6 +376,9 @@ public class Play {
                 } else {
                     r = System.getProperty(jp);
                     if (r == null) {
+                        r = System.getenv(jp);
+                    }
+                    if (r == null) {
                         Logger.warn("Cannot replace %s in configuration (%s=%s)", jp, key, value);
                         continue;
                     }
@@ -529,8 +532,8 @@ public class Play {
     public static synchronized void stop() {
         if (started) {
             Logger.trace("Stopping the play application");
-            started = false;
             pluginCollection.onApplicationStop();
+            started = false;
             Cache.stop();
             Router.lastLoading = 0L;
         }
