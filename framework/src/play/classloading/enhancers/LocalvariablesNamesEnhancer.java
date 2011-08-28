@@ -100,6 +100,14 @@ public class LocalvariablesNamesEnhancer extends Enhancer {
            throw new UnexpectedException("Cannot extract parameter names", e);
        }
    }
+   
+   /*
+    * support Javassist-3.9
+    */
+
+   /*
+    * EOF support Javassist-3.9
+    */
 
     //
     @Override
@@ -122,7 +130,7 @@ public class LocalvariablesNamesEnhancer extends Enhancer {
 
             // Signatures names
             CodeAttribute codeAttribute = (CodeAttribute) method.getMethodInfo().getAttribute("Code");
-            if (codeAttribute == null || javassist.Modifier.isAbstract(method.getModifiers()) || method.getAnnotation(NoLocalVariablesSupport.class) != null) {
+            if (codeAttribute == null || javassist.Modifier.isAbstract(method.getModifiers()) || JavassistPatch.getAnnotation(method, NoLocalVariablesSupport.class) != null) {
                 continue;
             }
             LocalVariableAttribute localVariableAttribute = (LocalVariableAttribute) codeAttribute.getAttribute("LocalVariableTable");
