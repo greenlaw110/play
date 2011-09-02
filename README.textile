@@ -1,3 +1,11 @@
+version history
+
+1.2.3.g1a
+
+1. "play new app" will not throw out exception if there are existsing models folder inside application-skel
+2. #{form} tag now acception "id" and "class" params
+3. all features in official v1.2.3 version
+
 h1. Welcome to Play framework
 
 Play framework makes it easier to build Web applications with Java. It is a clean alternative to bloated Enterprise Java stacks. It focuses on developer productivity and targets RESTful architectures. Play is a perfect companion to agile software development.

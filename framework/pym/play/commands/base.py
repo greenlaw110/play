@@ -91,8 +91,11 @@ def new(app, args, env, cmdloader=None):
     if application_name == "":
         application_name = os.path.basename(app.path)
     copy_directory(os.path.join(env["basedir"], 'resources/application-skel'), app.path)
-    os.mkdir(os.path.join(app.path, 'app/models'))
-    os.mkdir(os.path.join(app.path, 'lib'))
+    try:
+        os.mkdir(os.path.join(app.path, 'app/models'))
+        os.mkdir(os.path.join(app.path, 'lib'))
+    except OSError:
+        print "model folder already exists"
     app.check()
     replaceAll(os.path.join(app.path, 'conf/application.conf'), r'%APPLICATION_NAME%', application_name)
     replaceAll(os.path.join(app.path, 'conf/application.conf'), r'%SECRET_KEY%', secretKey())

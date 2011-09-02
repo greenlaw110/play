@@ -468,7 +468,7 @@ class JavaWithCaching {
             methods = new ArrayList<Method>();
             // get list of all annotated methods on this class..
             for( Method method : findAllAnnotatedMethods( clazz)) {
-                if (method.isAnnotationPresent(annotationType)) {
+                if (method.isAnnotationPresent(annotationType) && !methods.contains(method)) {
                     methods.add(method);
                 }
             }
