@@ -83,7 +83,7 @@ public abstract class Cache {
     public static boolean safeSet(String key, Object value, String expiration) {
         checkSerializable(value);
         int duration = Time.parseDuration(expiration);
-        if (duration < 0) return;
+        if (duration < 0) return false;
         return cacheImpl.safeSet(key, value, duration);
     }
 
@@ -121,7 +121,7 @@ public abstract class Cache {
     public static boolean safeReplace(String key, Object value, String expiration) {
         checkSerializable(value);
         int duration = Time.parseDuration(expiration);
-        if (duration < 0) return;
+        if (duration < 0) return false;
         return cacheImpl.safeReplace(key, value, duration);
     }
 
