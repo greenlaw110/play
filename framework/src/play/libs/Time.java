@@ -36,9 +36,6 @@ public class Time {
         if (duration == null) {
             return 60 * 60 * 24 * 30;
         }
-        String confDuration = play.Play.configuration.getProperty(duration);
-        if (null != confDuration) duration = confDuration;
-        if ("never".equals(duration)) return -1;
         int toAdd = -1;
         if (days.matcher(duration).matches()) {
             Matcher matcher = days.matcher(duration);

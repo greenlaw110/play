@@ -34,7 +34,9 @@ public abstract class Cache {
      */
     public static void add(String key, Object value, String expiration) {
         checkSerializable(value);
-        cacheImpl.add(key, value, Time.parseDuration(expiration));
+        int duration = parseDuration(expiration);
+        if (duration < 0) return;
+        cacheImpl.add(key, value, duration);
     }
 
     /**
@@ -47,7 +49,9 @@ public abstract class Cache {
      */
     public static boolean safeAdd(String key, Object value, String expiration) {
         checkSerializable(value);
-        return cacheImpl.safeAdd(key, value, Time.parseDuration(expiration));
+        int duration = parseDuration(expiration);
+        if (duration < 0) return false;
+        return cacheImpl.safeAdd(key, value, duration);
     }
 
     /**
@@ -57,7 +61,7 @@ public abstract class Cache {
      */
     public static void add(String key, Object value) {
         checkSerializable(value);
-        cacheImpl.add(key, value, Time.parseDuration(null));
+        cacheImpl.add(key, value, parseDuration(null));
     }
 
     /**
@@ -68,7 +72,7 @@ public abstract class Cache {
      */
     public static void set(String key, Object value, String expiration) {
         checkSerializable(value);
-        int duration = Time.parseDuration(expiration);
+        int duration = parseDuration(expiration);
         if (duration < 0) return;
         cacheImpl.set(key, value, duration);
     }
@@ -82,7 +86,7 @@ public abstract class Cache {
      */
     public static boolean safeSet(String key, Object value, String expiration) {
         checkSerializable(value);
-        int duration = Time.parseDuration(expiration);
+        int duration = parseDuration(expiration);
         if (duration < 0) return false;
         return cacheImpl.safeSet(key, value, duration);
     }
@@ -94,7 +98,7 @@ public abstract class Cache {
      */
     public static void set(String key, Object value) {
         checkSerializable(value);
-        cacheImpl.set(key, value, Time.parseDuration(null));
+        cacheImpl.set(key, value, parseDuration(null));
     }
 
     /**
@@ -105,7 +109,7 @@ public abstract class Cache {
      */
     public static void replace(String key, Object value, String expiration) {
         checkSerializable(value);
-        int duration = Time.parseDuration(expiration);
+        int duration = parseDuration(expiration);
         if (duration < 0) return;
         cacheImpl.replace(key, value, duration);
     }
@@ -120,7 +124,7 @@ public abstract class Cache {
      */
     public static boolean safeReplace(String key, Object value, String expiration) {
         checkSerializable(value);
-        int duration = Time.parseDuration(expiration);
+        int duration = parseDuration(expiration);
         if (duration < 0) return false;
         return cacheImpl.safeReplace(key, value, duration);
     }
@@ -132,7 +136,7 @@ public abstract class Cache {
      */
     public static void replace(String key, Object value) {
         checkSerializable(value);
-        cacheImpl.replace(key, value, Time.parseDuration(null));
+        cacheImpl.replace(key, value, parseDuration(null));
     }
 
     /**
@@ -264,6 +268,14 @@ public abstract class Cache {
         if(value != null && !(value instanceof Serializable)) {
             throw new CacheException("Cannot cache a non-serializable value of type " + value.getClass().getName(), new NotSerializableException(value.getClass().getName()));
         }
+    }
+    
+    private static int parseDuration(String duration) {
+        if (null == duration) return Time.parseDuration(null);
+        String confDuration = play.Play.configuration.getProperty(duration);
+        if (null != confDuration) duration = confDuration;
+        if ("never".equals(confDuration)) return -1;
+        return Time.parseDuration(duration);
     }
 }
 
