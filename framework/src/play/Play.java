@@ -691,7 +691,7 @@ public class Play {
             for (File module : localModules.listFiles()) {
                 String moduleName = module.getName();
                 if (moduleName.contains("-")) {
-                    moduleName = moduleName.substring(0, moduleName.indexOf("-"));
+                    moduleName = moduleName.substring(0, moduleName.lastIndexOf("-"));
                 }
                 if (module.isDirectory()) {
                     addModule(moduleName, module);
