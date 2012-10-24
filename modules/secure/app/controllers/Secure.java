@@ -4,6 +4,7 @@ import java.lang.reflect.InvocationTargetException;
 import java.util.List;
 import java.util.Date;
 import play.Play;
+import play.classloading.enhancers.Enhancer;
 import play.mvc.*;
 import play.data.validation.*;
 import play.libs.*;
@@ -86,7 +87,7 @@ public class Secure extends Controller {
         // Remember if needed
         if(remember) {
             Date expiration = new Date();
-            String duration = "30d";  // maybe make this override-able 
+            String duration = "30d";  // maybe make this override-able
             expiration.setTime(expiration.getTime() + Time.parseDuration(duration));
             response.setCookie("rememberme", Crypto.sign(username + "-" + expiration.getTime()) + "-" + username + "-" + expiration.getTime(), duration);
 
@@ -119,7 +120,7 @@ public class Secure extends Controller {
 
         /**
          * @Deprecated
-         * 
+         *
          * @param username
          * @param password
          * @return
@@ -143,7 +144,7 @@ public class Secure extends Controller {
 
         /**
          * This method checks that a profile is allowed to view this page/method. This method is called prior
-         * to the method's controller annotated with the @Check method. 
+         * to the method's controller annotated with the @Check method.
          *
          * @param profile
          * @return true if you are allowed to execute this controller method.
@@ -200,7 +201,7 @@ public class Secure extends Controller {
         private static Object invoke(String m, Object... args) throws Throwable {
 
             try {
-                return Java.invokeChildOrStatic(Security.class, m, args);       
+                return Java.invokeChildOrStatic(Security.class, m, args);
             } catch(InvocationTargetException e) {
                 throw e.getTargetException();
             }

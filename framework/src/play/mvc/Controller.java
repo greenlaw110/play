@@ -67,7 +67,7 @@ import javax.management.RuntimeErrorException;
  * Application controller support: The controller receives input and initiates a response by making calls on model objects.
  *
  * This is the class that your controllers should extend.
- * 
+ *
  */
 public class Controller implements ControllerSupport, LocalVariablesSupport {
 
@@ -92,7 +92,7 @@ public class Controller implements ControllerSupport, LocalVariablesSupport {
      * In fact, it is stored in a signed cookie. This session is therefore limited to 4kb.
      *
      * From Wikipedia:
-     * 
+     *
      * Client-side sessions use cookies and cryptographic techniques to maintain state without storing as much data on the server. When presenting a dynamic web page, the server sends the current state data to the client (web browser) in the form of a cookie. The client saves the cookie in memory or on disk. With each successive request, the client sends the cookie back to the server, and the server uses the data to "remember" the state of the application for that specific client and generate an appropriate response.
      * This mechanism may work well in some contexts; however, data stored on the client is vulnerable to tampering by the user or by software that has access to the client computer. To use client-side sessions where confidentiality and integrity are required, the following must be guaranteed:
      * Confidentiality: Nothing apart from the server should be able to interpret session data.
@@ -129,7 +129,7 @@ public class Controller implements ControllerSupport, LocalVariablesSupport {
     protected static Scope.Params params = null;
     /**
      * The current renderArgs scope: This is a hash map that is accessible during the rendering phase. It means you can access
-     * variables stored in this scope during the rendering phase (the template phase). 
+     * variables stored in this scope during the rendering phase (the template phase).
      *
      * Note: The ControllersEnhancer makes sure that an appropriate thread local version is applied.
      * ie : controller.renderArgs - controller.renderArgs.current()
@@ -327,7 +327,8 @@ public class Controller implements ControllerSupport, LocalVariablesSupport {
      * @param o The Java object to serialize
      */
     protected static void renderJSON(Object o) {
-        throw new RenderJson(o);
+        if (jsonSerializers.isEmpty()) throw new RenderJson(o);
+        else throw new RenderJson(o, jsonSerializers.values().toArray(new JsonSerializer[]{}));
     }
 
     /**
@@ -347,20 +348,20 @@ public class Controller implements ControllerSupport, LocalVariablesSupport {
     protected static void renderJSON(Object o, JsonSerializer<?>... adapters) {
         throw new RenderJson(o, adapters);
     }
-    
+
     /**
      * Global JsonSerializer Registry
      */
     private static Map<Class<?>, JsonSerializer<?>> jsonSerializers = new HashMap<Class<?>, JsonSerializer<?>>();
-    
+
     protected static void registerJsonSerializer(JsonSerializer<?> jsonSerializer) {
         jsonSerializers.put(jsonSerializer.getClass(), jsonSerializer);
     }
-    
+
     protected static void unregisterJsonSerializer(JsonSerializer<?> jsonSerializer) {
         jsonSerializers.remove(jsonSerializer.getClass());
     }
-    
+
     /**
      * Render a 200 OK application/json response
      * @param args The Java objects and a set of GSON serializers/deseralizers/instance creator to use
@@ -748,14 +749,14 @@ public class Controller implements ControllerSupport, LocalVariablesSupport {
         }
         return null == templateNameResolver? templateName : templateNameResolver.resolveTemplateName(templateName);
     }
-    
+
     /**
      * Green: provide a facility enable implict template name resolution, e.g. for the purpose of mobile device template routine
      */
     public static interface ITemplateNameResolver {
         public String resolveTemplateName(String templateName);
     }
-    
+
     private static ITemplateNameResolver templateNameResolver = null;
     public static void registerTemplateNameResolver(ITemplateNameResolver templateNameResolver) {
         if (null != Controller.templateNameResolver) Logger.warn("Existing tempate name resolver will be override!");
@@ -1050,7 +1051,7 @@ public class Controller implements ControllerSupport, LocalVariablesSupport {
         } else {
             throw new UnexpectedException("Lost promise for " + Http.Request.current() + "!");
         }
-        
+
         if(future.isDone()) {
             try {
                 return future.get();
@@ -1075,7 +1076,7 @@ public class Controller implements ControllerSupport, LocalVariablesSupport {
         if (Play.mode == Play.Mode.PROD) {
             return;
         }
-        
+
         try {
             throw new Exception();
         } catch (Exception e) {
