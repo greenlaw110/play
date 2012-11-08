@@ -9,9 +9,11 @@ import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
 import java.util.*;
 
+import org.apache.commons.collections.map.HashedMap;
 import org.apache.commons.lang.StringUtils;
 import play.Logger;
 import play.Play;
+import play.cache.Cache;
 import play.cache.CacheFor;
 import play.classloading.enhancers.ControllersEnhancer.ControllerInstrumentation;
 import play.classloading.enhancers.ControllersEnhancer.ControllerSupport;
@@ -585,7 +587,14 @@ public class ActionInvoker {
         return result;
     }
 
+    private static Map<String, Object[]> actionMethods = new HashedMap();
     public static Object[] getActionMethod(String fullAction) {
+        String key = "play.getActionMethod." + fullAction;
+        Object[] retVal = null;
+        if (Play.mode.isProd()) {
+            retVal = actionMethods.get(key);
+            if (null != retVal) return retVal;
+        }
         Method actionMethod = null;
         Class controllerClass = null;
         try {
@@ -614,7 +623,9 @@ public class ActionInvoker {
         } catch (Exception e) {
             throw new ActionNotFoundException(fullAction, e);
         }
-        return new Object[]{controllerClass, actionMethod};
+        retVal = new Object[]{controllerClass, actionMethod};
+        if (Play.mode.isProd()) actionMethods.put(key, retVal);
+        return retVal;
     }
 
 
