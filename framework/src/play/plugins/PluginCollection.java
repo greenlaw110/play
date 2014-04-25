@@ -390,14 +390,14 @@ public class PluginCollection {
     public List<PlayPlugin> getEnabledPlugins(){
         return enabledPlugins_readOnlyCopy;
     }
-    
+
     /**
      * Returns readonly view of all enabled plugins in reversed order
      * @return
      */
     public Collection<PlayPlugin> getReversedEnabledPlugins() {
         return new AbstractCollection<PlayPlugin>() {
-			
+
 		    @Override public Iterator<PlayPlugin> iterator() {
 		    	final ListIterator<PlayPlugin> enabledPluginsListIt = enabledPlugins.listIterator(size() - 1);
 		        return new Iterator<PlayPlugin>() {
@@ -420,9 +420,9 @@ public class PluginCollection {
 
 		      @Override public int size() {
 		        return enabledPlugins.size();
-		      }			
-			
-			
+		      }
+
+
 		};
     }
 
@@ -647,7 +647,7 @@ public class PluginCollection {
     }
 
     public void afterActionInvocation(){
-        for (PlayPlugin plugin : getEnabledPlugins()) {
+        for (PlayPlugin plugin : getReversedEnabledPlugins()) {
             plugin.afterActionInvocation();
         }
     }
