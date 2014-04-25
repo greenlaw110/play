@@ -101,6 +101,7 @@ public class Java {
                         return m;
                     }
                 }
+            }
 		    clazz = clazz.getSuperclass();
         }
         return null;

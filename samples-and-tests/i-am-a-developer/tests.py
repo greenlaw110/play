@@ -648,6 +648,7 @@ def bootstrapWorkingDirectory( folder ):
 def callPlay(self, args):
     play_script = os.path.join(self.working_directory, '../../../play')
     process_args = [play_script] + args
+    print process_args
     play_process = subprocess.Popen(process_args,stdout=subprocess.PIPE)
     return play_process
 

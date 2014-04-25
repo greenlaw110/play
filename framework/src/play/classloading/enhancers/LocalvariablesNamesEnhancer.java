@@ -1,36 +1,19 @@
 package play.classloading.enhancers;
 
-import java.lang.reflect.Method;
+import javassist.*;
+import javassist.bytecode.*;
+import play.Logger;
+import play.classloading.ApplicationClasses.ApplicationClass;
+import play.exceptions.UnexpectedException;
+import play.libs.F.T2;
+
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
-import java.util.Stack;
-
-import javassist.ClassPool;
-import javassist.CtClass;
-import javassist.CtConstructor;
-import javassist.CtField;
-import javassist.CtMethod;
-import javassist.Modifier;
-import javassist.NotFoundException;
-import javassist.bytecode.Bytecode;
-import javassist.bytecode.CodeAttribute;
-import javassist.bytecode.CodeIterator;
-import javassist.bytecode.LocalVariableAttribute;
-import javassist.bytecode.Opcode;
-import play.Logger;
-import play.classloading.ApplicationClasses.ApplicationClass;
-import play.exceptions.UnexpectedException;
-import play.libs.F.T2;
+import java.lang.reflect.Method;
+import java.util.*;
 
 /**
  * Track names of local variables ...
@@ -122,7 +105,7 @@ public class LocalvariablesNamesEnhancer extends Enhancer {
 
             // Signatures names
             CodeAttribute codeAttribute = (CodeAttribute) method.getMethodInfo().getAttribute("Code");
-            if (codeAttribute == null || javassist.Modifier.isAbstract(method.getModifiers()) || method.getAnnotation(NoLocalVariablesSupport.class) != null) {
+            if (codeAttribute == null || javassist.Modifier.isAbstract(method.getModifiers()) || hasAnnotation(method, NoLocalVariablesSupport.class.getName())) {
                 continue;
             }
             LocalVariableAttribute localVariableAttribute = (LocalVariableAttribute) codeAttribute.getAttribute("LocalVariableTable");
